@@ -20,7 +20,7 @@ ISBN-13s take the same form with the EAN code added (and the check digit recalcu
 * EAN Code is 978 or 979 for books
 * Group is used to show the country or language group, 1-5 digits
 * Publisher is the assignment to the manifestation's original publisher, 1-7 digits
-* Title fills the remaining digits to make the length
+* Title group or item id fills the remaining digits to make the length
 * Check digit
 
 ### Additional Notes
