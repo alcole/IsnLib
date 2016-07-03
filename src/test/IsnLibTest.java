@@ -12,6 +12,7 @@ public class IsnLibTest{
 	public void testCanonicalForm() {
 		assertEquals("978140885565", canonicalForm("978140885565 "));
 		assertEquals("9783161484100", canonicalForm("978-3-16-148410-0"));		
+		assertEquals("978140885565", canonicalForm("978140885565"));
 	}
 
 	@Test
@@ -30,7 +31,9 @@ public class IsnLibTest{
 		
 		assertFalse(validateIsn("0805071661"));
 		assertFalse("invalid form", validateIsn("0-8-0-5-0-7-1-6-6-1"));
-		//need 'X' example also test for 'x'
+		
+		assertTrue(validateIsn("2434561X"));
+		assertTrue(validateIsn("2434561x"));
 	}
 
 	@Test
@@ -49,7 +52,6 @@ public class IsnLibTest{
 	@Test
 	public void testIsbn10To13StringString() {
 		assertEquals("9780262510875" , isbn10To13("978", "0262510871"));
-		//assertEquals("9790260000438" , isbn10To13("979", "0262510871"));	
 	}
 
 	@Test

@@ -84,13 +84,14 @@ public class IsnLib {
 	 * @return true for isn strings with supplied with valid check digit, false otherwise
 	 */
 	public static boolean validateIsn(String isn) {
-		String canon = canonicalForm(isn);
 		if (!(Pattern.matches(ISSN_PATTERN, isn) ||
 		    Pattern.matches(ISBN10_PATTERN, isn) ||
 		    Pattern.matches(EAN13_PATTERN, isn))) {
 		  return false;
 		}
 		    
+		String canon = canonicalForm(isn);
+		
 		if (canon.length() == ISBN13_LENGTH) {
 			return generateCheck(canon) == canon.charAt(12);
 		}
@@ -117,10 +118,17 @@ public class IsnLib {
 		  throw new IllegalArgumentException();
 		
 		int s = 0, t = 0;
-		for (int i = 0; i < length; i++) {
+		for (int i = 0; i < length - 1; i++) {
 			t += Character.getNumericValue(isn.charAt(i));
 			s += t;
 		}
+		if (isn.charAt(length - 1) == 'X' || isn.charAt(length - 1) == 'x') {
+		  t += 10;
+		}
+		else {
+		  t += Character.getNumericValue(isn.charAt(length -1));
+		}
+		s += t;
 		return (s % 11) == 0;
 	}
 	
