@@ -1,17 +1,17 @@
 /**
  * MIT License
  *
- *  Copyright (c) 2016 Alexander Cole
+ * Copyright (c) 2016 Alexander Cole
  *
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *  The above copyright notice and this permission notice shall be included in all
- *  copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -49,6 +49,7 @@ public class IsnLib {
     public enum IdentifierType {
         ISSN, ISBN10, ISBN13, ISMN, ISSNEAN13, OTHER
     }
+
     /**
      * Strips the hyphens
      * @param  isn
@@ -93,14 +94,11 @@ public class IsnLib {
 
         if (canon.length() == ISBN13_LENGTH) {
             return generateCheck(canon) == canon.charAt(12);
-        }
-        else if (canon.length() == ISBN10_LENGTH) {
+        } else if (canon.length() == ISBN10_LENGTH) {
             return validate(canon, ISBN10_LENGTH);
-        }
-        else if (canon.length() == ISSN_LENGTH) {
+        } else if (canon.length() == ISSN_LENGTH) {
             return validate(canon, ISSN_LENGTH);
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -123,9 +121,8 @@ public class IsnLib {
         }
         if (isn.charAt(length - 1) == 'X' || isn.charAt(length - 1) == 'x') {
             t += 10;
-        }
-        else {
-            t += Character.getNumericValue(isn.charAt(length -1));
+        } else {
+            t += Character.getNumericValue(isn.charAt(length - 1));
         }
         s += t;
         return (s % 11) == 0;
@@ -145,19 +142,18 @@ public class IsnLib {
 
         int checkSum = 0;
         if (isn.length() == 13 || isn.length() == 12) {
-            for (int i = 1; i < 12; i = i+2) {
+            for (int i = 1; i < 12; i = i + 2) {
                 checkSum += Character.getNumericValue(isn.charAt(i));
             }
             checkSum *= 3;
-            for (int i = 0; i < 12; i = i+2) {
+            for (int i = 0; i < 12; i = i + 2) {
                 checkSum += Character.getNumericValue(isn.charAt(i));
             }
-            checkSum = (10 - (checkSum % 10 )) ;
+            checkSum = (10 - (checkSum % 10));
             checkSum = checkSum > 9 ? 0 : checkSum;
-            return (char)(checkSum + 48);
-        }
-        else {
-            return  generateCheckIsbn10Issn(isn, ((isn.length() + 1) / 2) * 2);
+            return (char) (checkSum + 48);
+        } else {
+            return generateCheckIsbn10Issn(isn, ((isn.length() + 1) / 2) * 2);
         }
     }
 
@@ -173,7 +169,7 @@ public class IsnLib {
             checkSum += Character.getNumericValue(isn.charAt(i)) * (length - i);
         }
         checkSum = (11 - checkSum % 11) % 11;
-        return checkSum == 10 ? 'X' : (char)(checkSum + 48);
+        return checkSum == 10 ? 'X' : (char) (checkSum + 48);
     }
 
     /**
@@ -186,7 +182,7 @@ public class IsnLib {
     }
 
     public static String isbn10To13(String prefix, String isbn10) {
-        return prefix + isbn10.substring(0,9) + generateCheck(prefix + isbn10);
+        return prefix + isbn10.substring(0, 9) + generateCheck(prefix + isbn10);
     }
 
     /**
@@ -214,7 +210,7 @@ public class IsnLib {
      * @return String ISSN if EAN contains, else returns original EAN code
      */
     public static String issnFromEan13(String ean) {
-        if (!(Pattern.matches(EAN13_PATTERN, ean) || ean.substring(0,3).equals("977"))) return ean;
+        if (!(Pattern.matches(EAN13_PATTERN, ean) || ean.substring(0, 3).equals("977"))) return ean;
         return canonicalForm(ean).substring(3, 10) + generateCheck(canonicalForm(ean).substring(3, 10));
     }
 
@@ -225,16 +221,17 @@ public class IsnLib {
      * @throws IllegalArgumentException for strings of a length that cannot be an isn and
      * if the check digit is not valid
      */
-    public static IdentifierType getType(String isn) throws IllegalArgumentException  {
+    public static IdentifierType getType(String isn) throws IllegalArgumentException {
         if (!validateIsn(isn)) throw new IllegalArgumentException("invalid identifier");
         isn = canonicalForm(isn);
         int length = isn.length();
 
         if (length == 8) return IdentifierType.ISSN;
         else if (length == 10) return IdentifierType.ISBN10;
-        else if (isn.substring(0,3).equals("977")) return IdentifierType.ISSNEAN13;
-        else if (isn.substring(0,4).equals("9790")) return IdentifierType.ISMN;
-        else if (isn.substring(0,3).equals("979") || isn.substring(0,3).equals("978")) return IdentifierType.ISBN13;
+        else if (isn.substring(0, 3).equals("977")) return IdentifierType.ISSNEAN13;
+        else if (isn.substring(0, 4).equals("9790")) return IdentifierType.ISMN;
+        else if (isn.substring(0, 3).equals("979") || isn.substring(0, 3).equals("978"))
+            return IdentifierType.ISBN13;
         else return IdentifierType.OTHER;
     }
 }
