@@ -9,7 +9,7 @@ import static com.alcole.bibliotools.IsnLib.*;
 /**
  * Created by alex on 05/11/16.
  */
-public class IsnLibTest{
+public class IsnLibTest {
 
     @Test
     public void testCanonicalForm() {
@@ -55,12 +55,12 @@ public class IsnLibTest{
 
     @Test
     public void testIsbn10To13String() {
-        assertEquals("9780262510875" , isbn10To13("0262510871"));
+        assertEquals("9780262510875", isbn10To13("0262510871"));
     }
 
     @Test
     public void testIsbn10To13StringString() {
-        assertEquals("9780262510875" , isbn10To13("978", "0262510871"));
+        assertEquals("9780262510875", isbn10To13("978", "0262510871"));
     }
 
     @Test
