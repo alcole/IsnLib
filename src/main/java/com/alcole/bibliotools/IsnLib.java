@@ -160,7 +160,7 @@ public class IsnLib {
     /**
      *
      * @param  isn
-     * @param  length
+     * @param  length - the target length for the supplied isn
      * @return the character corresponding to the check digit (0-9 or 'X')
      */
     private static char generateCheckIsbn10Issn(String isn, int length) {
