@@ -46,6 +46,11 @@ public class IsnLib {
     private static final String ISBN10_PATTERN = "[\\d|\\-]{9,13}[0-9xX]{1}";
     private static final String EAN13_PATTERN = "[9]{1}[7]{1}[7|8|9][\\d|\\-]{9,13}[\\d]{1}";
 
+    private static final String ISSNEAN13_PREFIX = "977";
+    private static final String ISMN_PREFIX = "9790";
+    private static final String ISBN_PREFIX1 = "978";
+    private static final String ISBN_PREFIX2 = "979";
+
     public enum IdentifierType {
         ISSN, ISBN10, ISBN13, ISMN, ISSNEAN13, OTHER
     }
@@ -178,7 +183,7 @@ public class IsnLib {
      * @return the ISBN-13 representation of the supplied ISBN-10
      */
     public static String isbn10To13(String isbn10) {
-        return isbn10To13("978", isbn10);
+        return isbn10To13(ISBN_PREFIX1, isbn10);
     }
 
     public static String isbn10To13(String prefix, String isbn10) {
@@ -210,7 +215,7 @@ public class IsnLib {
      * @return String ISSN if EAN contains, else returns original EAN code
      */
     public static String issnFromEan13(String ean) {
-        if (!(Pattern.matches(EAN13_PATTERN, ean) || ean.substring(0, 3).equals("977"))) return ean;
+        if (!(Pattern.matches(EAN13_PATTERN, ean) || ean.substring(0, 3).equals(ISSNEAN13_PREFIX))) return ean;
         return canonicalForm(ean).substring(3, 10) + generateCheck(canonicalForm(ean).substring(3, 10));
     }
 
@@ -228,9 +233,9 @@ public class IsnLib {
 
         if (length == 8) return IdentifierType.ISSN;
         else if (length == 10) return IdentifierType.ISBN10;
-        else if (isn.substring(0, 3).equals("977")) return IdentifierType.ISSNEAN13;
-        else if (isn.substring(0, 4).equals("9790")) return IdentifierType.ISMN;
-        else if (isn.substring(0, 3).equals("979") || isn.substring(0, 3).equals("978"))
+        else if (isn.substring(0, 3).equals(ISSNEAN13_PREFIX)) return IdentifierType.ISSNEAN13;
+        else if (isn.substring(0, 4).equals(ISMN_PREFIX)) return IdentifierType.ISMN;
+        else if (isn.substring(0, 3).equals(ISBN_PREFIX1) || isn.substring(0, 3).equals(ISBN_PREFIX2))
             return IdentifierType.ISBN13;
         else return IdentifierType.OTHER;
     }
