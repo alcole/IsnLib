@@ -135,13 +135,13 @@ public class IsnLib {
      * @throws IllegalArgumentException for strings of the wrong length
      */
     public static char generateCheck(String isn) throws IllegalArgumentException {
-        if (!(isn.length() == 13 || isn.length() == ISBN10_LENGTH ||
-                isn.length() == 12 || isn.length() == ISBN10_LENGTH - 1 ||
+        if (!(isn.length() == ISBN13_LENGTH || isn.length() == ISBN10_LENGTH ||
+                isn.length() == ISBN13_LENGTH - 1 || isn.length() == ISBN10_LENGTH - 1 ||
                 isn.length() == ISSN_LENGTH || isn.length() == ISSN_LENGTH - 1))
             throw new IllegalArgumentException();
 
         int checkSum = 0;
-        if (isn.length() == 13 || isn.length() == 12) {
+        if (isn.length() == ISBN13_LENGTH || isn.length() == ISBN13_LENGTH - 1) {
             for (int i = 1; i < 12; i = i + 2) {
                 checkSum += Character.getNumericValue(isn.charAt(i));
             }
