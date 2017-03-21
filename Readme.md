@@ -41,6 +41,10 @@ JUnit is required for the unit tests
 
 Let me know where you are using these functions, I'd be interested in hearing from you.
 
+# Related Project
+
+A related project with similar functionality can be found here: http://identifiertools.com/ 
+
 
 # Licence
 
