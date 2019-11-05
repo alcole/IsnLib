@@ -142,23 +142,31 @@ public final class IsnLib {
         || isn.length() == ISSN_LENGTH
         || isn.length() == ISSN_LENGTH - 1)) throw new IllegalArgumentException();
 
-    int checkSum = 0;
     if (isn.length() == ISBN13_LENGTH || isn.length() == ISBN13_LENGTH - 1) {
-      for (int i = 1; i < 12; i = i + 2) {
-        checkSum += Character.getNumericValue(isn.charAt(i));
-      }
-      checkSum *= 3;
-      for (int i = 0; i < 12; i = i + 2) {
-        checkSum += Character.getNumericValue(isn.charAt(i));
-      }
-      checkSum = (10 - (checkSum % 10));
-      if (checkSum > 9) {
-        checkSum = 0;
-      } 
-      return (char) (checkSum + 48);
+      return generateCheck13(isn);
     } else {
       return generateCheckIsbn10Issn(isn, ((isn.length() + 1) / 2) * 2);
     }
+  }
+
+  /**
+   * @param isn the isn to get check digit for, must be of length 12 or 13
+   * @return the character corresponding to the check digit (0-9)
+   */
+  private static char generateCheck13(final String isn) {
+    int checkSum = 0;
+    for (int i = 1; i < 12; i = i + 2) {
+      checkSum += Character.getNumericValue(isn.charAt(i));
+    }
+    checkSum *= 3;
+    for (int i = 0; i < 12; i = i + 2) {
+      checkSum += Character.getNumericValue(isn.charAt(i));
+    }
+    checkSum = (10 - (checkSum % 10));
+    if (checkSum > 9) {
+      checkSum = 0;
+    }
+    return (char) (checkSum + 48);
   }
 
   /**
